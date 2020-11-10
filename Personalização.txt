@@ -1,0 +1,206 @@
+Arquivo de auxílio para o vídeo do dia 10/11/2020
+Que fala sobre personalização do seu Prompt do Termux
+Link do Vídeo: https://youtu.be/nbOt_vpkc08
+Link do Canal: https://youtube.com/davideca
+Versão do meu Termux: 0.101
+
+---------------------------------
+Comandos antes da personalização:
+
+pkg update -y && pkg upgrade -y
+pkg install nano -y
+pkg install figlet -y
+---------------------------------
+Nano será o nosso editor de texto, o Figlet é para termos um texto mais personalizado.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PARTE 1, modificando a Entrada
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-------------------------------------
+Comandos para personalizar a entrada:
+
+cd ..
+cd usr
+cd etc
+nano motd
+-------------------------------------
+
+Estando na motd, a única coisa que precisa fazer é colocar o texto da sua entrada.
+Se quiser uma dica: utilize o figlet com seu nome e em baixo coloque uma ascii art de sua escolha.
+
+-----------------------
+Sintaxe do Figlet:
+
+figlet {seu texto/nome}
+-----------------------
+
+Após fazer todas as modificações necessárias, pressione "ctrl s" e depois "ctrl x"
+Depois disso volte para a pasta home utilizando "cd ~"
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PARTE 2, modificando o Prompt
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Para termos uma base de como ficará nosso prompt quando finalizarmos, vamos usar o comando PS1
+
+---------------
+Sintaxe do PS1:
+
+PS1="..."
+---------------
+Onde no lugar das reticências colocaremos nossos comandos de personalização.
+Nessa área podemos utilizar alguns caracteres de Escape.
+
+
+---------------------------------------------------------------------------------------------------------------------------
+Lista de caracteres de escape (exibe informações e tem algumas funcionalidades):
+
+\d — exibe a data no formato nome do dia da semana, nome do mês e dia do mês. Por exemplo: “Fri Nov 06”
+
+\h — o hostname do seu sistema (hostname padrão do Android, para mudar necessita de root)
+
+\n — insere uma nova linha (igual linguagens de programação)
+
+\t — a hora atual do sistema no formato 24h H:M:S
+
+\T — a hora atual do sistema no formato 12h H:M:S
+
+\@ — a hora atual do sistema no formato 12h am/pm
+
+\A — a hora atual do sistema no formato 24h HH:MM
+
+\u — o nome do usuário (mesma coisa do hostname)
+
+\v — versão do shell
+
+\w — exibe o caminho até o diretório atual, a pasta home é abreviada com um "~" (til)
+
+\W — semelhante ao anterior, porém só exibe o diretório atual
+
+\! — número da linha atual no historico do sistema
+
+\# — número deste comando nessa sessão
+
+\$ — caso o usuário seja root, aparecerá uma #, caso não, aparecerá um $
+
+\\ — será exibido uma \ (backslash)
+
+\e — imprime um caractere de escape padrão. Muito usado para inserir informações sobre cores (como veremos mais pra frente)
+
+\[ — utilizado para montar uma sequência de caracteres não imprimíveis, como configurações
+
+\] — termina a sequência de caracteres não imprimíveis
+---------------------------------------------------------------------------------------------------------------------------
+
+O PS1 padrão do Termux é "\$ "
+De algumas distribuições Linux é "\u@\h:\w\$ ", o que fica algo do tipo "admin@kali:~$ "(sem contar as cores)
+Porém ao usarmos o PS1 do Kali, nosso Termux ficará algo do tipo "u0_a532@localhost:~$ "
+
+Isso se deve ao fato de não podermos trocar o username e o hostname com a ausência do usuário root, meu caso.
+Por isso eu deixo geralmente "Davideca@DwD:\w\$ " o que deixa uma string que não é "100% verdadeira", já que a primeira parte não é uma informação vinda do sistema.
+
+Porém, o único usuário do meu Termux sou eu, e o nome do meu dispositivo para a maioria das coisa é DwD, então não vejo muito problema.
+
+~~~~~~~~~~~~~~
+Parte 3, cores
+~~~~~~~~~~~~~~
+
+Também podemos mudar as cores do nosso Termux, como por exemplo deixa-lo com a fonte Verde.
+Use esse código em seu Terminal:
+PS1="\e[32mQue cor é essa?"
+
+Para remover esse PS1, basta sair e iniciar outra sessão no seu Termux
+
+Lista de efeitos:
+
+0 — sem efeitos
+1 — negrito
+2 — efeito esmaecido, deixa a cor cinza
+3 — itálico
+4 — sublinhado
+7 — inversão de cores do fundo com a letra
+
+
+Lista de cores:
+
+30 —  preto
+31 —  vermelho
+32 —  verde
+33 —  amarelo
+34 —  azul
+35 —  púrpura
+36 —  ciano
+37 —  branco
+
+Lista de background:
+
+40 —  preto
+41 —  vermelho
+42 —  verde
+43 —  amarelo
+44 —  azul
+45 —  púrpura
+46 —  ciano
+47 —  branco
+
+Sintaxe das cores/efeitos:
+
+PS1="\e[...mTexto"
+
+Onde no lugar das reticências vc usará o(s) número(s).
+Lembrando que quando terminar os números, precisa colocad um "m" no final e ae que vc pode iniciar o texto.
+
+
+Para colocar em negrito:
+
+PS1="\e[1mQue efeito é este? "
+
+Para mudar a cor da fonte para vermelho: 
+
+PS1="\e[31mQue cor é esta? "
+
+Para mudar o background para azul:
+
+PS1="\e[44mQue cor é esta? "
+
+
+Caso queira juntar tudo isso em uma única string, separe os números com ;
+
+
+PS1="\e[1;31;44mFácil né? "
+
+
+
+AVISO: Os efeitos e cores de background não funcionam perfeitamente no Termux
+
+
+
+Caso queira criar "blocos" com cores, vc utiliza \[\e[ ... \]
+Exemplo:
+
+
+PS1="\[\e[34m\]Azul \[\e[31m\]Vermelho "
+
+
+A "paleta" de cores também funciona para outros comandos, como o "echo" que imprime uma mensagem na tela.
+
+
+Após termos a PS1 exatamente como queremos, vamos copiar o texto e mandar os seguintes comandos:
+
+----------------
+cd ..
+cd usr
+cd etc
+nano bash.bashrc
+----------------
+
+No final do arquivo onde está a PS1, iremos apagar e colar a nossa PS1 personalizada, dar um "ctrl s" e "ctrl x"
+Depois disso é só reiniciar o App
+
+Qualquer dúvida entre em contato:
+
+Instagram: @davideca272
+Discord: Davideca#9655
+
+Davideca © 2020
